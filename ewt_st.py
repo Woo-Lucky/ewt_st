@@ -6,6 +6,14 @@ import matplotlib.pyplot as plt
 import ewtpy
 import os
 
+# 엑셀 스타일 열 이름(A, B, ..., AA 등)을 숫자로 변환
+def excel_col_to_index(col):
+    col = col.upper()
+    index = 0
+    for i, c in enumerate(reversed(col)):
+        index += (ord(c) - ord('A') + 1) * (26 ** i)
+    return index - 1
+
 # 페이지 설정
 st.set_page_config(page_title="EWT 필터 분석 앱", layout="wide")
 
@@ -14,7 +22,8 @@ with st.sidebar:
     st.title("EWT 필터 분석 파라미터 설정")
     uploaded_file = st.file_uploader("🔗CSV 파일 업로드", type=["csv"] )
     delimiter = st.text_input("구분자(delimiter)", value=",")
-    col = st.number_input("데이터 열 인덱스(col)", min_value=0, value=0)
+    col_input = st.text_input("데이터 열 인덱스(col)", value="A", help="분석할 데이터가 있는 열 입력")
+    col = excel_col_to_index(col_input)
     start_row = st.number_input("시작 행 인덱스(start_row)", min_value=0, value=0)
     end_row = st.number_input("끝 행 인덱스(end_row, -1은 끝까지)", value=-1)
     n_support = st.number_input("최대 모드 수(n_support)", min_value=1, value=3)
