@@ -4,14 +4,15 @@ import numpy as np
 import ast
 import matplotlib.pyplot as plt
 import ewtpy
+import os
 
 # 페이지 설정
-st.set_page_config(page_title="EWT 시각화 앱", layout="wide")
+st.set_page_config(page_title="EWT 필터 분석 앱", layout="wide")
 
 # 사이드바: 파일 업로드 및 파라미터 설정
 with st.sidebar:
-    st.title("EWT 시각화 설정")
-    uploaded_file = st.file_uploader("CSV 파일 업로드", type=["csv"] )
+    st.title("EWT 필터 분석 파라미터 설정")
+    uploaded_file = st.file_uploader("🔗CSV 파일 업로드", type=["csv"] )
     delimiter = st.text_input("구분자(delimiter)", value=",")
     col = st.number_input("데이터 열 인덱스(col)", min_value=0, value=0)
     start_row = st.number_input("시작 행 인덱스(start_row)", min_value=0, value=0)
@@ -31,10 +32,10 @@ with st.sidebar:
         no_plot = True
     else:
         no_plot = False
-    run_button = st.button("분석 실행")
+    run_button = st.button("📈분석 실행")
 
 # 메인 영역: 안내 및 결과
-st.title("Empirical Wavelet Transform (EWT) 시각화")
+st.title("Empirical Wavelet Transform (EWT) 필터를 이용한 GNSS 변위 데이터 필터링")
 
 if not uploaded_file:
     st.info("왼쪽 사이드바에서 CSV 파일을 업로드하고 파라미터를 설정하세요.")
@@ -78,6 +79,8 @@ if uploaded_file and run_button:
 
     # 플롯 표시
     if not no_plot:
+        st.success("아래에서 CSV 파일을 다운로드할 수 있습니다.")
+        
         # 4개의 서브플롯: 원본, 컴포넌트, 정규화, 평균 차이
         fig, axes = plt.subplots(4, 1, figsize=(20, 15), sharex=True)
         labels = [f"Mode {i+1}" for i in range(ewt.shape[1])]
@@ -108,6 +111,7 @@ if uploaded_file and run_button:
         axes[3].grid(linestyle='--')
 
         st.pyplot(fig, use_container_width=True)
+        st.info("⬇️CSV 파일 다운로드⬇️")
 
     # 결과 다운로드
     diffs = [(ewt[:, i] - (avgs[i] if avgs else ewt[:, i].mean())) for i in range(ewt.shape[1])]
@@ -115,7 +119,9 @@ if uploaded_file and run_button:
     cols = [f"Mode{i+1}" for i in range(ewt.shape[1])] + [f"Mode{i+1}_diff" for i in range(ewt.shape[1])]
     out_df = pd.DataFrame(out, columns=cols)
     csv_data = out_df.to_csv(index=False).encode('utf-8')
-    st.download_button("EWT 결과 CSV 다운로드", csv_data, file_name="ewt_result.csv", mime='text/csv')
+    original_name = os.path.splitext(uploaded_file.name)[0]
+    filename = f"{original_name}_ewt.csv"
+    st.download_button("💾EWT 결과 CSV 다운로드", csv_data, file_name=filename, mime='text/csv')
 
 elif uploaded_file:
     st.warning("파라미터를 설정한 후 '분석 실행' 버튼을 눌러주세요.")
