@@ -21,8 +21,8 @@ st.set_page_config(page_title="EWT 필터 분석 앱", layout="wide")
 with st.sidebar:
     st.title("EWT 필터 분석 파라미터 설정")
     uploaded_file = st.file_uploader("🔗CSV 파일 업로드", type=["csv"] )
-    delimiter = st.text_input("구분자(delimiter)", value=",")
-    col_input = st.text_input("데이터 열 인덱스(col)", value="A", help="분석할 데이터가 있는 열 입력")
+    delimiter = st.text_input("구분자(delimiter)", value=",", help="CSV 파일의 구분자 입력 (기본값: ',')")
+    col_input = st.text_input("데이터 열 인덱스(col)", value="A", help="분석할 데이터가 있는 열 입력 ex) A, B, C, ..., AA, AB, ...")
     col = excel_col_to_index(col_input)
     start_row = st.number_input("시작 행 인덱스(start_row)", min_value=0, value=0)
     end_row = st.number_input("끝 행 인덱스(end_row, -1은 끝까지)", value=-1)
@@ -36,7 +36,7 @@ with st.sidebar:
     avgs_input = st.text_input("평균 리스트(avgs) ex: [0,0,0]", value="")
     # plot_all = st.checkbox("전체 플롯(plot_all)", value=False)
     # no_plot = st.checkbox("플롯 미표시(no_plot)", value=False)
-    no_plot = st.selectbox("플롯 표시 여부", ["표시", "미표시"], index=0)
+    no_plot = st.selectbox("결과 그래프 표시 여부", ["표시", "미표시"], index=0)
     if no_plot == "미표시":
         no_plot = True
     else:
@@ -45,6 +45,7 @@ with st.sidebar:
 
 # 메인 영역: 안내 및 결과
 st.title("Empirical Wavelet Transform (EWT) 필터를 이용한 GNSS 변위 데이터 필터링")
+st.subheader("made by EJtech")
 
 if not uploaded_file:
     st.info("왼쪽 사이드바에서 CSV 파일을 업로드하고 파라미터를 설정하세요.")
@@ -91,7 +92,7 @@ if uploaded_file and run_button:
     out_df = pd.DataFrame(out, columns=cols)
     
     # 데이터 샘플 표시 (분석 결과)
-    st.subheader("결과 데이터 샘플")
+    st.subheader("결과 데이터 미리보기")
     st.dataframe(out_df)
     
     # 플롯 표시
