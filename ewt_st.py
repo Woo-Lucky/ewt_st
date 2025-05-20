@@ -51,7 +51,6 @@ if uploaded_file and run_button:
 
     # 데이터 추출
     data = df.iloc[start_row:end_row if end_row != -1 else None, col].to_numpy()
-    st.write("### 데이터 샘플:", data[:1000])
 
     # 평균 리스트 파싱
     avgs = None
@@ -76,7 +75,16 @@ if uploaded_file and run_button:
         lengthFilter=w_filter,
         sigmaFilter=s_filter
     )
-
+    
+    diffs = [(ewt[:, i] - (avgs[i] if avgs else ewt[:, i].mean())) for i in range(ewt.shape[1])]
+    out = np.column_stack([ewt] + diffs)
+    cols = [f"Mode{i+1}" for i in range(ewt.shape[1])] + [f"Mode{i+1}_diff" for i in range(ewt.shape[1])]
+    out_df = pd.DataFrame(out, columns=cols)
+    
+    # 데이터 샘플 표시 (분석 결과)
+    st.subheader("결과 데이터 샘플")
+    st.dataframe(out_df)
+    
     # 플롯 표시
     if not no_plot:
         st.success("아래에서 CSV 파일을 다운로드할 수 있습니다.")
@@ -114,10 +122,6 @@ if uploaded_file and run_button:
         st.info("⬇️CSV 파일 다운로드⬇️")
 
     # 결과 다운로드
-    diffs = [(ewt[:, i] - (avgs[i] if avgs else ewt[:, i].mean())) for i in range(ewt.shape[1])]
-    out = np.column_stack([ewt] + diffs)
-    cols = [f"Mode{i+1}" for i in range(ewt.shape[1])] + [f"Mode{i+1}_diff" for i in range(ewt.shape[1])]
-    out_df = pd.DataFrame(out, columns=cols)
     csv_data = out_df.to_csv(index=False).encode('utf-8')
     original_name = os.path.splitext(uploaded_file.name)[0]
     filename = f"{original_name}_ewt.csv"
