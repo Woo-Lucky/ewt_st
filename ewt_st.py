@@ -24,8 +24,8 @@ with st.sidebar:
     w_filter = st.number_input("필터 너비(w_filter)", min_value=0, value=10)
     s_filter = st.number_input("Gaussian 표준편차(s_filter)", min_value=0, value=5)
     avgs_input = st.text_input("평균 리스트(avgs) ex: [0,0,0]", value="")
-    plot_all = st.checkbox("전체 플롯(plot_all)", value=False)
-    no_plot = st.checkbox("플롯 미표시(no_plot)", value=False)
+    # plot_all = st.checkbox("전체 플롯(plot_all)", value=False)
+    # no_plot = st.checkbox("플롯 미표시(no_plot)", value=False)
     run_button = st.button("분석 실행")
 
 # 메인 영역: 안내 및 결과
