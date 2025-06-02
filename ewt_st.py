@@ -1,10 +1,18 @@
 import streamlit as st
+import base64
 import pandas as pd
 import numpy as np
 import ast
 import matplotlib.pyplot as plt
 import ewtpy
 import os
+
+def get_image_base64(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read()
+        return base64.b64encode(data).decode()
+
+logo_base64 = get_image_base64("logo.png")  # 경로 정확히 확인
 
 # 엑셀 스타일 열 이름(A, B, ..., AA 등)을 숫자로 변환
 def excel_col_to_index(col):
@@ -47,10 +55,10 @@ with st.sidebar:
 # 메인 영역: 안내 및 결과
 st.title("Empirical Wavelet Transform (EWT) 필터를 이용한 GNSS 변위 데이터 필터링")
 st.markdown(
-    """
+    f"""
     <div style="display: flex; align-items: center;">
         <h3 style="margin-right: 10px;">made by</h3>
-        <img src="logo.png" width="80">
+        <img src="data:image/png;base64,{logo_base64}" width="80">
     </div>
     """,
     unsafe_allow_html=True
