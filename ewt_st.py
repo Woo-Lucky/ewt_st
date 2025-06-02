@@ -15,7 +15,6 @@ def excel_col_to_index(col):
     return index - 1
 
 # 페이지 설정
-st.image("logo.png", width=200)
 st.set_page_config(page_title="EWT 필터 분석 앱", layout="wide")
 
 # 사이드바: 파일 업로드 및 파라미터 설정
