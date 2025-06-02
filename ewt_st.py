@@ -58,7 +58,7 @@ st.markdown(
     f"""
     <div style="display: flex; align-items: center;">
         <h3 style="margin-right: 10px;">made by</h3>
-        <img src="data:image/png;base64,{logo_base64}" width="80">
+        <img src="data:image/png;base64,{logo_base64}" width="90">
     </div>
     """,
     unsafe_allow_html=True
