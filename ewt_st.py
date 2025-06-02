@@ -57,7 +57,7 @@ st.title("Empirical Wavelet Transform (EWT) 필터를 이용한 GNSS 변위 데�
 st.markdown(
     f"""
     <div style="display: flex; align-items: center;">
-        <h3 style="margin-right: 5px;">made by</h3>
+        <h3 style="margin-right: 0px;">made by</h3>
         <img src="data:image/png;base64,{logo_base64}" width="100">
     </div>
     """,
