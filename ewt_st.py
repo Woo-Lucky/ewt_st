@@ -46,7 +46,15 @@ with st.sidebar:
 
 # 메인 영역: 안내 및 결과
 st.title("Empirical Wavelet Transform (EWT) 필터를 이용한 GNSS 변위 데이터 필터링")
-st.subheader("made by EJtech")
+st.markdown(
+    """
+    <div style="display: flex; align-items: center;">
+        <h3 style="margin-right: 10px;">made by</h3>
+        <img src="logo.png" width="80">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 if not uploaded_file:
     st.info("왼쪽 사이드바에서 CSV 파일을 업로드하고 파라미터를 설정하세요.")
