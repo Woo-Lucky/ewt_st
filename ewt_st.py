@@ -29,7 +29,7 @@ with st.sidebar:
     end_row = st.number_input("끝 행 인덱스(end_row, -1은 끝까지)", value=-1)
     n_support = st.number_input("최대 모드 수(n_support)", min_value=1, value=3)
     log = st.checkbox("로그 스펙트럼(log)", value=False)
-    detect = st.selectbox("탐지 모드(detect)", ["locmax", "locmaxmin", "locmaxminf"], index=0)
+    detect = st.selectbox("탐지 모드(detect)", ["locmax", "locmaxmin", "locmaxminf"], index=0, help="LocalMax, LocalMaxMin, LocalMaxMinF")
     completion = st.checkbox("모드 완성(completion)", value=False)
     reg = st.selectbox("보정(reg)", ["none", "gaussian", "average"], index=2)
     w_filter = st.number_input("필터 너비(w_filter)", min_value=0, value=10)
