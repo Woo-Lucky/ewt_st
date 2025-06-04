@@ -15,7 +15,7 @@ def excel_col_to_index(col):
     return index - 1
 
 # 페이지 설정
-st.set_page_config(page_title="EWT 필터 분석 앱", layout="wide")
+st.set_page_config(page_title="EJFilter v0.1", layout="wide")
 
 # 사이드바: 파일 업로드 및 파라미터 설정
 with st.sidebar:
@@ -44,8 +44,8 @@ with st.sidebar:
     run_button = st.button("📈분석 실행")
 
 # 메인 영역: 안내 및 결과
-st.title("Empirical Wavelet Transform (EWT) 필터를 이용한 GNSS 변위 데이터 필터링")
-st.subheader("made by EJtech")
+st.title("EJFilter v0.1")
+st.subheader("Based on EWT")
 
 if not uploaded_file:
     st.info("왼쪽 사이드바에서 CSV 파일을 업로드하고 파라미터를 설정하세요.")
