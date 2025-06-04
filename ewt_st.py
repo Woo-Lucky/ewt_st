@@ -23,12 +23,12 @@ def excel_col_to_index(col):
     return index - 1
 
 # 페이지 설정
-st.set_page_config(page_title="EWT 필터 분석 앱", layout="wide")
+st.set_page_config(page_title="EJFilter v0.1", layout="wide")
 
 # 사이드바: 파일 업로드 및 파라미터 설정
 with st.sidebar:
     st.image("logo.png", width=300)
-    st.title("EWT 필터 분석 파라미터 설정")
+    st.title("파라미터 설정")
     uploaded_file = st.file_uploader("🔗CSV 파일 업로드", type=["csv"] )
     delimiter = st.text_input("구분자(Delimiter)", value=",", help="CSV 파일의 구분자 입력 (기본값: ',')")
     col_input = st.text_input("데이터 열 인덱스(col)", value="A", help="분석할 데이터가 있는 열 입력 ex) A, B, C, ..., AA, AB, ...")
@@ -53,7 +53,9 @@ with st.sidebar:
     run_button = st.button("📈분석 실행")
 
 # 메인 영역: 안내 및 결과
-st.title("Empirical Wavelet Transform (EWT) 필터를 이용한 GNSS 변위 데이터 필터링")
+st.title("EJFilter v0.1")
+st.subheader("Based on EWT")
+
 st.markdown(
     f"""
     <div style="display: flex; align-items: center;">
