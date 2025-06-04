@@ -19,7 +19,8 @@ st.set_page_config(page_title="EJFilter v0.1", layout="wide")
 
 # 사이드바: 파일 업로드 및 파라미터 설정
 with st.sidebar:
-    st.title("EWT 필터 분석 파라미터 설정")
+    st.image("logo.png", width=300)
+    st.title("파라미터 설정")
     uploaded_file = st.file_uploader("🔗CSV 파일 업로드", type=["csv"] )
     delimiter = st.text_input("구분자(delimiter)", value=",", help="CSV 파일의 구분자 입력 (기본값: ',')")
     col_input = st.text_input("데이터 열 인덱스(col)", value="A", help="분석할 데이터가 있는 열 입력 ex) A, B, C, ..., AA, AB, ...")
