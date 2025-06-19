@@ -6,6 +6,10 @@ import matplotlib.pyplot as plt
 import ewtpy
 import os
 
+font_name = "Malgun Gothic"
+plt.rcParams["font.family"] = font_name
+plt.rcParams["axes.unicode_minus"] = False  # 마이너스 기호 깨짐 방지
+
 # 엑셀 스타일 열 이름(A, B, ..., AA 등)을 숫자로 변환
 def excel_col_to_index(col):
     col = col.upper()
@@ -103,15 +107,17 @@ if uploaded_file and run_button:
         # 4개의 서브플롯: 원본, 컴포넌트, 정규화, 평균 차이
         fig, axes = plt.subplots(4, 1, figsize=(20, 15), sharex=True)
         labels = [f"Mode {i+1}" for i in range(ewt.shape[1])]
-
         axes[0].set_title('Original')
         axes[0].plot(data)
+        axes[0].set_ylabel("값(m)")
         axes[0].grid(linestyle='--')
+        axes[0].ticklabel_format(style='plain', useOffset=False)
 
         axes[1].set_title('EWT')
         for i in range(ewt.shape[1]):
             axes[1].plot(ewt[:, i], label=labels[i], alpha=1 - i*0.2)
         axes[1].legend()
+        axes[1].set_ylabel("진폭(m)")
         axes[1].grid(linestyle='--')
 
         axes[2].set_title('Normalized Components')
@@ -120,6 +126,7 @@ if uploaded_file and run_button:
             norm = (ewt[:, i] - mn) / (mx - mn)
             axes[2].plot(norm, label=labels[i], alpha=1 - i*0.2)
         axes[2].legend()
+        axes[2].set_ylabel("정규화 값(0~1)")
         axes[2].grid(linestyle='--')
 
         axes[3].set_title('EWT - Average')
@@ -127,6 +134,8 @@ if uploaded_file and run_button:
             base = avgs[i] if avgs else ewt[:, i].mean()
             axes[3].plot(ewt[:, i] - base, label=labels[i], alpha=1 - i*0.2)
         axes[3].legend()
+        axes[3].set_ylabel("편차(m)")
+        axes[3].set_xlabel('샘플 번호(초)')
         axes[3].grid(linestyle='--')
 
         st.pyplot(fig, use_container_width=True)
