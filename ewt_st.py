@@ -31,7 +31,7 @@ with st.sidebar:
     col = excel_col_to_index(col_input)
     start_row = st.number_input("시작 행 인덱스(start_row)", min_value=0, value=0)
     end_row = st.number_input("끝 행 인덱스(end_row, -1은 끝까지)", value=-1)
-    n_support = st.number_input("최대 모드 수(n_support)", min_value=1, value=3)
+    n_support = st.number_input("최대 모드 수(n_support)", min_value=1, value=3, max_value=6)
     log = st.checkbox("로그 스펙트럼(log)", value=False)
     detect = st.selectbox("탐지 모드(detect)", ["locmax", "locmaxmin", "locmaxminf"], index=0, help="LocalMax, LocalMaxMin, LocalMaxMinF")
     completion = st.checkbox("모드 완성(completion)", value=False)
@@ -103,9 +103,8 @@ if uploaded_file and run_button:
     # 플롯 표시
     if not no_plot:
         st.success("아래에서 CSV 파일을 다운로드할 수 있습니다.")
-        
         # 4개의 서브플롯: 원본, 컴포넌트, 정규화, 평균 차이
-        fig, axes = plt.subplots(4, 1, figsize=(20, 15), sharex=True)
+        fig, axes = plt.subplots(5, 1, figsize=(20, 15), sharex=True)
         labels = [f"Mode {i+1}" for i in range(ewt.shape[1])]
         axes[0].set_title('Original')
         axes[0].plot(data)
@@ -135,9 +134,19 @@ if uploaded_file and run_button:
             axes[3].plot(ewt[:, i] - base, label=labels[i], alpha=1 - i*0.2)
         axes[3].legend()
         axes[3].set_ylabel("편차(m)")
-        axes[3].set_xlabel('샘플 번호(초)')
         axes[3].grid(linestyle='--')
-
+        
+        axes[4].set_title('EWT - Assembled')
+        if n_support > 1:
+            avg_sum = np.sum(ewt[:, :n_support - 1], axis=1)
+            axes[4].plot(avg_sum, label=f"Sum of Mode 1 to {n_support - 1}", color='black', linewidth=2)
+            axes[4].legend()
+        axes[4].legend()
+        axes[4].set_ylabel("합계 진폭(m)")
+        axes[4].set_xlabel("샘플 번호(초)")
+        axes[4].grid(linestyle='--')
+        
+        plt.subplots_adjust(hspace=0.4)  # ★ 간격 조절 추가
         st.pyplot(fig, use_container_width=True)
         st.info("⬇️CSV 파일 다운로드⬇️")
 
